@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-
+from Splash_Screen import views_splash_screen
 urlpatterns = [
+	url(r'^check_version',views_splash_screen.get_version),
     url(r'^admin/', admin.site.urls),
 ]

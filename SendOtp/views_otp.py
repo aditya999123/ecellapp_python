@@ -18,5 +18,5 @@ def get_otp(request,name,number):
 	result_json = requests.request('GET', url)
 	return HttpResponse("{'success':1}")
 
-def initial(requests):
+def initial(request):
 	return HttpResponse("under construction")

@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect, HttpResponse
 # Create your views here.
 def get_otp(request,name,number):
-	url='https://api.msg91.com/api/sendhttp.php?authkey=120246AC7mrK6PUjd5794d29c&mobiles='
+	url='http://api.msg91.com/api/sendhttp.php?authkey=120246AC7mrK6PUjd5794d29c&mobiles='
 	
 	#phno_data = np.loadtxt('phno.csv', delimiter=' ',dtype='str')
 	#n = random.random()

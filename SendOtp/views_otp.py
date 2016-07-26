@@ -19,4 +19,4 @@ def get_otp(request,name,number):
 	return HttpResponse("{'success':1}")
 
 def initial(requests):
-	return("under construction ")
+	return HttpResponse("under construction")

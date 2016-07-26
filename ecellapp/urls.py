@@ -16,7 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from Splash_Screen import views_splash_screen
+from SendOtp import views_otp
 urlpatterns = [
 	url(r'^check_version',views_splash_screen.get_version),
     url(r'^admin/', admin.site.urls),
+    url(r'^get_otp/(?P<name>\w+)/(?P<number>\w+)/$',views_otp.get_otp, name = 'otp'), 
 ]

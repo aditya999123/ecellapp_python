@@ -17,3 +17,6 @@ def get_otp(request,name,number):
 	url+='&sender=AdiCse&route=4'
 	result_json = requests.request('GET', url)
 	return HttpResponse("{'success':1}")
+
+def initial(requests):
+	return("under construction ")

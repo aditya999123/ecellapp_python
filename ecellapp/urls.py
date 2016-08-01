@@ -22,5 +22,11 @@ urlpatterns = [
     url(r'^$',views_otp.initial,name='start'),
     url(r'^check_version',views_splash_screen.get_version),
     url(r'^admin/', admin.site.urls),
-    url(r'^get_otp/(?P<name>\w+)/(?P<number>\w+)/$',views_otp.get_otp, name = 'otp'), 
+    url(r'^get_otp/(?P<name>\w+)/(?P<number>\w+)/$',views_otp.get_otp, name = 'otp'),
+    url(r'^send_fcm/(?P<fcm>\w+)/$',views_otp.send_fcm, name = 'fcm'),
+    
+    url(r'^ver_otp/(?P<firstname>.+)/(?P<lastname>.+)/(?P<email>.+)/(?P<college>.+)/(?P<branch>.+)/(?P<sem>.+)/(?P<number>.+)/(?P<otp>\w+)/(?P<fcm>.+)/$',views_otp.ver_otp, name = 'otp_ver'), 
+    url(r'^send_notification/(?P<data>\w+)/$',views_otp.send_notification, name = 'not'),
+
+
 ]

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Splash_Screen',
+    'SendOtp',
 #    'django_mysql',
 ]
 

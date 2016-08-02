@@ -78,23 +78,25 @@ def send_fcm(request,fcm):
 		fcm_list=gcm_data.objects.get(fcm=fcm)
 	except:
 		fcm_data.create(fcm=fcm)
-
+import time
 def send_notification(request,data):
+	user_list=user_data.objects.all()
 	url="https://fcm.googleapis.com/fcm/send"
 	headers={
 	'Content-Type':'application/json',
 	"Authorization":"key=AIzaSyCmRDiB2zoKvbeiMTgVQXVs-o86tJ3AH04"
 	}
-	json={"to" : "fxkdtNoFIT8:APA91bFwBy4plm32o8gOp9TvSMRdBSpDFl7DIiqnVBMh2DWOSteCw_hqHKymRzRj50te5eNZ2T7LjhvCtGbqOuEuvPA4IMAVJMQsi4BscTBr3vq9jFiisP-HiK-Y8F4uktvm5e7XlWM7",
-	"notification" : {"body" : "iket_madarchod","title" : "asd",},
-	"delay_while_idle":True,
-	"priority" : "high",
+	for o in user_list:
+		print o.fcm
+		json=  {"to" : o.fcm,
+		"notification" : {
+		"body" : data,
+		"title" : "ECell-BQuiz",}}
+		print json
+		result=requests.request('POST', url,headers=headers,json=json)
+      	print result
 
-    }
-
-
-	
- 	result = requests.request('POST', url,headers=headers,json=json)
- 	return HttpResponse(result)
+      	
+ 	return HttpResponse('{"success":"1"}')
 def initial(request):
 	return HttpResponse("under construction_iket")

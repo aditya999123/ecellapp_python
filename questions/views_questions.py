@@ -4,6 +4,7 @@ import time
 import requests
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import timer_table
+from SendOtp.models import user_data
 # Create your views here.
 def question(request):
 	timer_query=timer_table.objects.all()

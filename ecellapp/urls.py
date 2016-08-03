@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from Splash_Screen import views_splash_screen
 from SendOtp import views_otp
+from questions import views_questions
 urlpatterns = [
 	#url(r'^',views_otp.initial,name='intial'),
     url(r'^$',views_otp.initial,name='start'),
@@ -26,7 +27,9 @@ urlpatterns = [
     url(r'^send_fcm/(?P<fcm>\w+)/$',views_otp.send_fcm, name = 'fcm'),
     
     url(r'^ver_otp/(?P<firstname>.+)/(?P<lastname>.+)/(?P<email>.+)/(?P<college>.+)/(?P<branch>.+)/(?P<sem>.+)/(?P<number>.+)/(?P<otp>\w+)/(?P<fcm>.+)/$',views_otp.ver_otp, name = 'otp_ver'), 
-    url(r'^send_notification/(?P<data>.+)/$',views_otp.send_notification, name = 'not'),
+    url(r'^send_notification/(?P<data>.+)/$',views_questions.send_notification, name = 'not'),
+    url(r'^get_ques/$',views_questions.question, name = 'get_ques'),
+    url(r'^timer_trigger/(?P<time_set>.+)/$',views_questions.trigger, name = 'trigger'),
 
 
 ]

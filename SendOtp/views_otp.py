@@ -78,25 +78,5 @@ def send_fcm(request,fcm):
 		fcm_list=gcm_data.objects.get(fcm=fcm)
 	except:
 		fcm_data.create(fcm=fcm)
-import time
-def send_notification(request,data):
-	user_list=user_data.objects.all()
-	url="https://fcm.googleapis.com/fcm/send"
-	headers={
-	'Content-Type':'application/json',
-	"Authorization":"key=AIzaSyCmRDiB2zoKvbeiMTgVQXVs-o86tJ3AH04"
-	}
-	for o in user_list:
-		print o.fcm
-		json=  {"to" : o.fcm,
-		"notification" : {
-		"body" : data,
-		"title" : "ECell-BQuiz",}}
-		print json
-		result=requests.request('POST', url,headers=headers,json=json)
-      	print result
-
-      	
- 	return HttpResponse('{"success":"1"}')
 def initial(request):
 	return HttpResponse("under construction_iket")

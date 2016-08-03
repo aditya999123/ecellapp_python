@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Splash_Screen',
     'SendOtp',
-#    'django_mysql',
+    'questions',
 ]
 
 MIDDLEWARE_CLASSES = [

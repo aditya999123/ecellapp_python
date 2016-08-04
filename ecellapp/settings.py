@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'ecellapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'django',
+        'NAME': 'androidapp_django',
         'USER': 'android_team',
         'PASSWORD': 'ecell',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on

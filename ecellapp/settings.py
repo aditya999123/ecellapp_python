@@ -25,7 +25,7 @@ SECRET_KEY = 'xku*0*ufa6r9-0=6$efz1ewj5nms7b$p=2^_3n7@!srg#!^@%w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['testing.ecellnitrr.org','http://testing.ecellnitrr.org']
 
 
 # Application definition

@@ -100,18 +100,18 @@ def send_fcm(request):
 			print "fcm======================"+fcm
 			try:
 				fcm_list=fcm__not_registered.objects.get(fcm=fcm)
-				response_json={"success":1,
+				response_json={"success":True,
 				"message":"already added"}
 			except:
 				fcm__not_registered.objects.create(fcm=fcm)
-				response_json={"success":1,
+				response_json={"success":True,
 				"message":"successfully added"}
 		except:
-			response_json={"success":0,
+			response_json={"success":False,
 				"message":"send fcm : invalid parameters"}
 
 	else:
-		response_json={"success":0,
+		response_json={"success":False,
 				"message":"not post method"}		
 	return HttpResponse(str(response_json))
 

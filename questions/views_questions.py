@@ -4,7 +4,7 @@ import time
 import requests
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import timer_table
-from SendOtp.models import user_data
+from SendOtp.models import user_data,user_token_data
 # Create your views here.
 def question(request):
 	timer_query=timer_table.objects.all()
@@ -31,50 +31,6 @@ def question(request):
 		"message":"the",
 		}
 	return HttpResponse(str(json))
-
-flag=0
-def trigger(request,time_set):
-	global flag
-	from SendOtp.models import user_data
-	user_list=user_data.objects.all()
-	url="https://fcm.googleapis.com/fcm/send"
-	headers={
-	'Content-Type':'application/json',
-	"Authorization":"key=AIzaSyCmRDiB2zoKvbeiMTgVQXVs-o86tJ3AH04"
-	}
-	for o in user_list:
-		print o.fcm
-		json=  {"to" : o.fcm,
-		"notification" : {
-		"body" : "the quiz starts in "+str(int(time_set)/60)+" min",
-		"title" : "ECell-BQuiz",}}
-		print json
-		result=requests.request('POST', url,headers=headers,json=json)
-      	print result
-	timer_query=timer_table.objects.all()
-	timer=timer_query[0]
-	print time_set
-	time.sleep(3)
-	setattr(timer,"time",int(time_set))
-	timer.save()
-	if(flag==0):
-		p1=mp.Process(name='timer',target=timer_fun)
-		p1.start()
-		flag=1
-
-	return(HttpResponse("timer started"))
-
-
-def timer_fun():
-	timer_query=timer_table.objects.all()
-	timer=timer_query[0]
-	print "timer="+str(timer.time)
-	while(timer.time):
-		print"while"
-		print timer.time
-		setattr(timer,"time",timer.time-1)
-		timer.save()
-		time.sleep(1)
 
 
 def send_notification(request,data):

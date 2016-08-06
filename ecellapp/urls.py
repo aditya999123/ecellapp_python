@@ -29,7 +29,9 @@ urlpatterns = [
     url(r'^ver_otp/(?P<firstname>.+)/(?P<lastname>.+)/(?P<email>.+)/(?P<college>.+)/(?P<branch>.+)/(?P<sem>.+)/(?P<number>.+)/(?P<otp>\w+)/(?P<fcm>.+)/$',views_otp.ver_otp, name = 'otp_ver'), 
     url(r'^send_notification/(?P<data>.+)/$',views_questions.send_notification, name = 'not'),
     url(r'^get_ques/$',views_questions.question, name = 'get_ques'),
-    url(r'^timer_trigger/(?P<time_set>.+)/$',views_questions.trigger, name = 'trigger'),
+    #url(r'^ques_trigger/$',views_questions.question, name = 'ques_trigger'),
+
+#    url(r'^timer_trigger/(?P<time_set>.+)/$',views_questions.trigger, name = 'trigger'),
 
 
 ]

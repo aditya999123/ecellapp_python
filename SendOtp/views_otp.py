@@ -37,6 +37,7 @@ def get_otp(request,name,number):
 	except:
 		return HttpResponse('{"success":"0"}')
 def ver_otp(request,firstname,lastname,email,college,branch,sem,number,otp,fcm):
+	access_token_str=str(random.randint(1000,9999))+number+str(random.randint(1000,9999))
 	try:
 		otp_list=otp_data.objects.get(number=number)
 		if otp_list.otp==int(otp):
@@ -51,12 +52,21 @@ def ver_otp(request,firstname,lastname,email,college,branch,sem,number,otp,fcm):
 				setattr(user_list,'branch',branch)
 				setattr(user_list,'sem',sem)
 				setattr(user_list,'number',number)
-				
-				setattr(user_list,'fcm',fcm)
 				#setattr(user_list,'access_token',access_token)
 				user_list.save()
+
 			except:
+				number_user_no=user_data.objects.count()
+				if number_user_no == None:
+					number_user= 1
+        		else:
+        			number_user= number_user_no + 1
+				user_token_data.create(
+					id=number_user,
+					fcm=fcm,
+					access_token=access_token_str)
 				user_data.objects.create(
+					id=number_user,
 					first_name=firstname,
 					last_name=lastname,
 					email=email,
@@ -64,10 +74,13 @@ def ver_otp(request,firstname,lastname,email,college,branch,sem,number,otp,fcm):
 					college=college,
 					branch=branch,
 					sem=sem,
-					#access_token=access_token,
-					fcm=fcm
+					#access_token=access_token
 					)
-			return HttpResponse('{"status":"verified"}')
+			response_json={
+			"status":"verified",
+			"access_token":access_token_str
+			}
+			return HttpResponse(str(response_json))
 		else:
 			return HttpResponse('{"status":"not_verified"}')
 	except:

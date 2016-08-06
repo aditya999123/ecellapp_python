@@ -4,6 +4,8 @@ import requests
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import *
+from django.shortcuts import render_to_response, render
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 def get_otp(request,name,number):
 	url='http://api.msg91.com/api/sendhttp.php?authkey=120246AC7mrK6PUjd5794d29c&mobiles='
@@ -56,6 +58,11 @@ def ver_otp(request,firstname,lastname,email,college,branch,sem,number,otp,fcm):
 				user_list.save()
 
 			except:
+				try:
+					fcm_initial_list=fcm__not_registered.objects.get(fcm=fcm)
+					fcm_initial_list.delete()
+				except:
+					pass
 				number_user_no=user_data.objects.count()
 				if number_user_no == None:
 					number_user= 1
@@ -85,11 +92,28 @@ def ver_otp(request,firstname,lastname,email,college,branch,sem,number,otp,fcm):
 			return HttpResponse('{"status":"not_verified"}')
 	except:
 		return HttpResponse('{"status":"error"}')
+@csrf_exempt
+def send_fcm(request):
+	if(request.method=='POST'):
+		try:
+			fcm=str(request.POST.get("fcm"))
+			print "fcm======================"+fcm
+			try:
+				fcm_list=fcm__not_registered.objects.get(fcm=fcm)
+				response_json={"success":1,
+				"message":"already added"}
+			except:
+				fcm__not_registered.objects.create(fcm=fcm)
+				response_json={"success":1,
+				"message":"successfully added"}
+		except:
+			response_json={"success":0,
+				"message":"send fcm : invalid parameters"}
 
-def send_fcm(request,fcm):
-	try:
-		fcm_list=gcm_data.objects.get(fcm=fcm)
-	except:
-		fcm_data.create(fcm=fcm)
+	else:
+		response_json={"success":0,
+				"message":"not post method"}		
+	return HttpResponse(str(response_json))
+
 def initial(request):
 	return HttpResponse("under construction_iket")

@@ -4,7 +4,10 @@ import time
 import requests
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import timer_table
-from SendOtp.models import user_data,user_token_data
+from SendOtp.models import user_data,user_token_data,fcm__not_registered
+from django.shortcuts import render_to_response, render
+from django.views.decorators.csrf import csrf_protect
+from django.template import RequestContext
 # Create your views here.
 def question(request):
 	timer_query=timer_table.objects.all()
@@ -31,10 +34,26 @@ def question(request):
 		"message":"the",
 		}
 	return HttpResponse(str(json))
+@csrf_protect
+def admin_panel(request):
+	variables = RequestContext(request)
+	if request.method=="GET":
+		
+		return render_to_response('admin_panel.html',variables)
+	if request.method=="POST":
+		if request.POST.get("send")=='SEND':
+			print"adddddddddddddddddddddddddddddddddddddddddddd"
 
-
-def send_notification(request,data):
+			print str(request.POST.get("title"))+str(request.POST.get("data"))
+			send_notification(request.POST.get("title"),request.POST.get("data"))
+		return render_to_response('admin_panel.html',variables)
+#@csrf_protect
+def send_notification(tile,data):
 	user_list=user_data.objects.all()
+	try:
+		user_list.append(fcm__not_registered.objects.all())
+	except:
+		pass
 	url="https://fcm.googleapis.com/fcm/send"
 	headers={
 	'Content-Type':'application/json',
@@ -45,10 +64,7 @@ def send_notification(request,data):
 		json=  {"to" : o.fcm,
 		"notification" : {
 		"body" : data,
-		"title" : "ECell-BQuiz",}}
+		"title" : title,}}
 		print json
-		result=requests.request('POST', url,headers=headers,json=json)
-      	print result
-
-      	
- 	return HttpResponse('{"success":"1"}')
+		print requests.request('POST', url,headers=headers,json=json)
+      	#print result

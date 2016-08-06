@@ -21,3 +21,7 @@ class user_token_data(models.Model):
     id=models.PositiveSmallIntegerField(primary_key='True')
     fcm=models.CharField(max_length=400,blank=True,null=True)
     access_token=models.CharField(max_length=120,blank=True,null=True)
+
+class fcm__not_registered(models.Model):
+    fcm=models.CharField(max_length=400,blank=True,null=True)
+    

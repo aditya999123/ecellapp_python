@@ -14,5 +14,14 @@
         </table>
         <input type="submit" value="SEND" name="send"/>  
     </form>
+    <form method="post" action=".">
+      {% csrf_token %}
+        <table border="0">
+            <tr><th><label for="title">question</label></th><td><input name="question_id" type="text"></input>
+            </td></tr>
+            
+        </table>
+        <input type="submit" value="QUESTION_SET" name="question_set"/>  
+    </form>
 </body>
 </html>

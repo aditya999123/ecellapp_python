@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^send_fcm/$',views_otp.send_fcm, name = 'fcm'),
     url(r'^ver_otp/(?P<firstname>.+)/(?P<lastname>.+)/(?P<email>.+)/(?P<college>.+)/(?P<branch>.+)/(?P<sem>.+)/(?P<number>.+)/(?P<otp>\w+)/(?P<fcm>.+)/$',views_otp.ver_otp, name = 'otp_ver'), 
     url(r'^send_notification/(?P<data>.+)/$',views_questions.send_notification, name = 'not'),
-    url(r'^get_ques/$',views_questions.question, name = 'get_ques'),
+    url(r'^get_ques/$',views_questions.question_get, name = 'get_ques'),
     url(r'^admin_panel/$',views_questions.admin_panel, name = 'admin_panel'),
     #url(r'^ques_trigger/$',views_questions.question, name = 'ques_trigger'),
 

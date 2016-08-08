@@ -57,41 +57,57 @@ def ver_otp(request,firstname,lastname,email,college,branch,sem,number,otp,fcm):
 				#setattr(user_list,'access_token',access_token)
 				user_list.save()
 
+				user_token_data_list=user_token_data.get(id=user_list.id)
+				setattr(user_token_data_list,'fcm',fcm)
+				setattr(user_token_data_list,'access_token',access_token_str)
+
 			except:
 				try:
 					fcm_initial_list=fcm__not_registered.objects.get(fcm=fcm)
 					fcm_initial_list.delete()
+					user_data.objects.create(
+						first_name=firstname,
+						last_name=lastname,
+						email=email,
+						number=number,
+						college=college,
+						branch=branch,
+						sem=sem,
+						#access_token=access_token
+						)
+
+					user_token_data.create(
+						id=user_data.objects.all().reverse()[0].id,
+						fcm=fcm,
+						access_token=access_token_str)
+					response_json={
+					"success":True,
+					"message":"successful",
+					"access_token":access_token_str,
+					}
 				except:
-					pass
-				number_user_no=user_data.objects.count()
-				if number_user_no == None:
-					number_user= 1
-        		else:
-        			number_user= number_user_no + 1
-				user_token_data.create(
-					id=number_user,
-					fcm=fcm,
-					access_token=access_token_str)
-				user_data.objects.create(
-					id=number_user,
-					first_name=firstname,
-					last_name=lastname,
-					email=email,
-					number=number,
-					college=college,
-					branch=branch,
-					sem=sem,
-					#access_token=access_token
-					)
-			response_json={
-			"status":"verified",
-			"access_token":access_token_str
-			}
-			return HttpResponse(str(response_json))
+					response_json={
+					"success":False,
+					"message":"fcm not found in table",
+					"access_token":access_token_str,
+					}
+
+			#return HttpResponse(str(response_json))
 		else:
-			return HttpResponse('{"status":"not_verified"}')
+			#return HttpResponse('{"status":"not_verified"}')
+			response_json={
+			"success":False,
+			"message":"not verified otp did not match",
+			"access_token":"NULL",
+			}
+
 	except:
-		return HttpResponse('{"status":"error"}')
+		response_json={
+			"success":False,
+			"message":"number does not exsist",
+			"access_token":"NULL",
+			}
+	return HttpResponse(str(response_json))
 @csrf_exempt
 def send_fcm(request):
 	if(request.method=='POST'):

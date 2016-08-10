@@ -167,6 +167,8 @@ def send_ans(request):
 					response_json={
 					"success":False,
 					"message":"response already registered",
+					"message_image":"https://upload.wikimedia.org/wikipedia/commons/3/3c/Fluorite-270246.jpg",
+					"message_display":"your response for this question has already been submitted",
 					}
 				except:
 					user_response.objects.create(
@@ -177,11 +179,15 @@ def send_ans(request):
 						)
 					response_json={
 					"success":True,
+					"message_image":"https://upload.wikimedia.org/wikipedia/commons/3/3c/Fluorite-270246.jpg",
+					"message_display":"your response has been successfuly submitted",
 					"message":"response successfuly registered",
 					}
 			except:
 				response_json={
 					"success":False,
 					"message":"access token not found",
+					"message_image":"https://upload.wikimedia.org/wikipedia/commons/3/3c/Fluorite-270246.jpg",
+					"message_display":"pls register again",
 					}
 	return HttpResponse(str(response_json))

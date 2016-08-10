@@ -15,3 +15,10 @@ class questions(models.Model):
 	option4=models.CharField(max_length=120,blank=True,null=True)
 	image_url=models.CharField(max_length=120,blank=True,null=True)
 	ans=models.CharField(max_length=120,blank=True,null=True)
+
+class user_response(models.Model):
+    response_id= models.AutoField(primary_key=True)
+    question_id=models.PositiveSmallIntegerField()
+    user_id=models.PositiveSmallIntegerField()
+    quiz_id=models.PositiveSmallIntegerField()
+    response=models.CharField(max_length=120,blank=True,null=True)

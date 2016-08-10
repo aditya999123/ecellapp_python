@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^send_notification/(?P<data>.+)/$',views_questions.send_notification, name = 'not'),
     url(r'^get_ques/$',views_questions.question_get, name = 'get_ques'),
     url(r'^admin_panel/$',views_questions.admin_panel, name = 'admin_panel'),
+    url(r'^send_ans/$',views_questions.send_ans, name = 'send_ans'),
     #url(r'^ques_trigger/$',views_questions.question, name = 'ques_trigger'),
 
 #    url(r'^timer_trigger/(?P<time_set>.+)/$',views_questions.trigger, name = 'trigger'),

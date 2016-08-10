@@ -24,10 +24,3 @@ class user_token_data(models.Model):
 
 class fcm__not_registered(models.Model):
     fcm=models.CharField(max_length=400,blank=True,null=True)
-
-class user_response(models.Model):
-    response_id= models.AutoField(primary_key=True)
-    question_id=models.PositiveSmallIntegerField()
-    user_id=models.PositiveSmallIntegerField()
-    quiz_id=models.PositiveSmallIntegerField()
-    response=models.CharField(max_length=120,blank=True,null=True)

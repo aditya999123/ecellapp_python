@@ -7,12 +7,16 @@ from SendOtp.models import user_data,user_token_data,fcm__not_registered
 from django.shortcuts import render_to_response, render
 from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext
-from .models import questions
+from .models import questions,user_response
+
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 flag_timer=0
 current_question=-1
+current_quiz_id=0
 #current que 0 for wait for next ques
 #current que -1 for quiz not started
+#current que -2 the quiz has ended
 def fun():
 	pass
 def question_get(request):
@@ -101,7 +105,7 @@ def admin_panel(request):
 		
 	if request.method=="POST":
 		if request.POST.get("send")=='SEND':
-			print"adddddddddddddddddddddddddddddddddddddddddddd"
+			#print"adddddddddddddddddddddddddddddddddddddddddddd"
 
 			print str(request.POST.get("title"))+str(request.POST.get("data"))
 			send_notification(request.POST.get("title"),request.POST.get("data"))
@@ -137,4 +141,47 @@ def send_notification(title,data):
 		"title" : str(title),}}
 		print json
 		print requests.request('POST', url,headers=headers,json=json)
-      	#print result
+
+@csrf_exempt
+def send_ans(request):
+	if (request.method=='GET'):
+		pass
+	if(request.method)=='POST':
+		if(current_question==-1):
+			response_json={
+			"success":False,
+			"message":"quiz has not started",
+			}
+		if(current_question>=0):
+			question_id_user=int(str(request.POST.get("question_id")))
+			user_access_token=str(request.POST.get("access_token"))
+			global current_quiz_id
+			try:
+				user_id=user_token_data.objects.get(access_token=user_access_token)[0].id
+				try:
+					user_response_list=user_response.objects.get(
+						quiz_id=current_quiz_id,
+						user_id=user_id,
+						question_id=question_id_user,
+						)
+					response_json={
+					"success":False,
+					"message":"response already registered",
+					}
+				except:
+					user_response.objects.create(
+						quiz_id=current_quiz_id,
+						user_id=user_id,
+						question_id=question_id_user,
+						response=str(request.POST.get("response"))
+						)
+					response_json={
+					"success":True,
+					"message":"response successfuly registered",
+					}
+			except:
+				response_json={
+					"success":False,
+					"message":"access token not found",
+					}
+	return HttpResponse(str(response_json))

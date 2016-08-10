@@ -35,9 +35,11 @@ def get_otp(request,name,number):
 	# 		otp_queries.otp=int(otp)
 	# 		otp_data.objects.create(number=number,otp=int(otp))
 	#
-		return HttpResponse('{"success":"1"}')
+		response_json={"success":True}
 	except:
-		return HttpResponse('{"success":"0"}')
+		response_json={"success":False}
+	
+	return HttpResponse(str(response_json))
 def ver_otp(request,firstname,lastname,email,college,branch,sem,number,otp,fcm):
 	access_token_str=str(random.randint(1000,9999))+number+str(random.randint(1000,9999))
 	try:
@@ -113,7 +115,7 @@ def send_fcm(request):
 	if(request.method=='POST'):
 		try:
 			fcm=str(request.POST.get("fcm"))
-			print "fcm======================"+fcm
+			print "fcm recived:"+fcm
 			try:
 				fcm_list=fcm__not_registered.objects.get(fcm=fcm)
 				response_json={"success":True,

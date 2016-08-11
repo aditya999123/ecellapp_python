@@ -8,7 +8,7 @@ class otp_data(models.Model):
     verify=models.PositiveSmallIntegerField(default=0)
 
 class user_data(models.Model):
-    id=models.PositiveSmallIntegerField(primary_key='True')
+    id=models.AutoField(primary_key=True,null=False)
     number=models.CharField(max_length=120,blank=True,null=True)
     first_name=models.CharField(max_length=120,blank=True,null=True)
     last_name=models.CharField(max_length=120,blank=True,null=True)

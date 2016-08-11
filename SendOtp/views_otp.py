@@ -7,20 +7,22 @@ from .models import *
 from django.shortcuts import render_to_response, render
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
-def get_otp(request,name,number):
-	url='http://api.msg91.com/api/sendhttp.php?authkey=120246AC7mrK6PUjd5794d29c&mobiles='
-	
-	#phno_data = np.loadtxt('phno.csv', delimiter=' ',dtype='str')
-	#n = random.random()
-	#for o in phno_data:
-	#	url+= str(o)+',
-	n=random.randint(1000,9999)
-	url+=str(number)
-	otp=str(n)
-
-	url+='&message='+'hello '+str(name)+' your otp for ecell app  is '+otp
-	url+='&sender=mECell&route=4'
+def get_otp(request):
 	try:
+		url='http://api.msg91.com/api/sendhttp.php?authkey=120246AC7mrK6PUjd5794d29c&mobiles='
+		name=str(request.POST.get("name"))
+		number=str(request.POST.get("mobile"))
+		#phno_data = np.loadtxt('phno.csv', delimiter=' ',dtype='str')
+		#n = random.random()
+		#for o in phno_data:
+		#	url+= str(o)+',
+		n=random.randint(1000,9999)
+		url+=str(number)
+		otp=str(n)
+
+		url+='&message='+'hello '+str(name)+' your otp for ecell app  is '+otp
+		url+='&sender=mECell&route=4'
+	
 		result = requests.request('GET', url)
 
 		try:
@@ -35,14 +37,30 @@ def get_otp(request,name,number):
 	# 		otp_queries.otp=int(otp)
 	# 		otp_data.objects.create(number=number,otp=int(otp))
 	#
-		response_json={"success":True}
+		response_json={"success":True,"message":"party"}
 	except:
-		response_json={"success":False}
-	
+		response_json={"success":False,"message":"otp not sent"}
+	print str(response_json)
 	return HttpResponse(str(response_json))
-def ver_otp(request,firstname,lastname,email,college,branch,sem,number,otp,fcm):
-	access_token_str=str(random.randint(1000,9999))+number+str(random.randint(1000,9999))
+#@csrf_exempt
+def ver_otp(request):
 	try:
+		firstname=str(request.POST.get("firstname"))
+		lastname=str(request.POST.get("lastname"))
+		email=str(request.POST.get("email"))
+		college=str(request.POST.get("college"))
+		branch=str(request.POST.get("branch"))
+		sem=str(request.POST.get("sem"))
+		number=str(request.POST.get("mobile"))
+		otp=str(request.POST.get("otp"))
+		fcm=str(request.POST.get("fcm"))
+		print"\n"
+		print fcm
+
+		print "get method successful"
+		print"\n"
+		access_token_str=str(random.randint(1000,9999))+number+str(random.randint(1000,9999))
+		
 		otp_list=otp_data.objects.get(number=number)
 		if otp_list.otp==int(otp):
 			setattr(otp_list,'verify',int(1))
@@ -77,9 +95,9 @@ def ver_otp(request,firstname,lastname,email,college,branch,sem,number,otp,fcm):
 						sem=sem,
 						#access_token=access_token
 						)
-
+					user_list=user_data.objects.get(number=number)
 					user_token_data.create(
-						id=user_data.objects.all().reverse()[0].id,
+						id=user_list.id,
 						fcm=fcm,
 						access_token=access_token_str)
 					response_json={
@@ -109,28 +127,36 @@ def ver_otp(request,firstname,lastname,email,college,branch,sem,number,otp,fcm):
 			"message":"number does not exsist",
 			"access_token":"NULL",
 			}
+	print str(response_json)
 	return HttpResponse(str(response_json))
 @csrf_exempt
 def send_fcm(request):
 	if(request.method=='POST'):
 		try:
 			fcm=str(request.POST.get("fcm"))
-			print "fcm recived:"+fcm
-			try:
-				fcm_list=fcm__not_registered.objects.get(fcm=fcm)
-				response_json={"success":True,
-				"message":"already added"}
-			except:
-				fcm__not_registered.objects.create(fcm=fcm)
-				response_json={"success":True,
-				"message":"successfully added"}
+			if fcm==None:
+
+				print "fcm recived:"+fcm
+				try:
+					fcm_list=fcm__not_registered.objects.get(fcm=fcm)
+					response_json={"success":True,
+					"message":"already added"}
+				except:
+					fcm__not_registered.objects.create(fcm=fcm)
+					response_json={"success":True,
+					"message":"successfully added"}
+			else:
+				response_json={"success":False,
+					"message":"fcm none recieved"}
+
 		except:
 			response_json={"success":False,
 				"message":"send fcm : invalid parameters"}
 
 	else:
 		response_json={"success":False,
-				"message":"not post method"}		
+				"message":"not post method"}
+	print str(response_json)
 	return HttpResponse(str(response_json))
 
 def initial(request):

@@ -96,6 +96,7 @@ def question_get(request):
 				"image_url":"NULL",
 				"question_duration":0,}
 				}
+	print str(response_json)
 	return HttpResponse(str(response_json))
 @csrf_protect
 def admin_panel(request):
@@ -119,7 +120,7 @@ def admin_panel(request):
 			else:
 				current_question=int(request.POST.get("question_id"))
 				print "question activated:" +str(current_question)
-		
+	#print str(response_json)
 	return render_to_response('admin_panel.html',variables)
 #@csrf_protect
 def send_notification(title,data):
@@ -157,7 +158,10 @@ def send_ans(request):
 			user_access_token=str(request.POST.get("access_token"))
 			global current_quiz_id
 			try:
-				user_id=user_token_data.objects.get(access_token=user_access_token)[0].id
+				user_list=user_token_data.objects.get(access_token=user_access_token)
+				print "access_token recived:"+user_access_token
+
+				user_id.id
 				try:
 					user_response_list=user_response.objects.get(
 						quiz_id=current_quiz_id,
@@ -190,4 +194,5 @@ def send_ans(request):
 					"message_image":"https://upload.wikimedia.org/wikipedia/commons/3/3c/Fluorite-270246.jpg",
 					"message_display":"pls register again",
 					}
+	print str(response_json)
 	return HttpResponse(str(response_json))

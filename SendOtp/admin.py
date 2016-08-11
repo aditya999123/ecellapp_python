@@ -6,7 +6,7 @@ class otp_dataAdmin(admin.ModelAdmin):
 admin.site.register(otp_data,otp_dataAdmin)
 
 class user_dataAdmin(admin.ModelAdmin):
-    list_display=["first_name","number"]
+    list_display=["id","first_name","number"]
 admin.site.register(user_data,user_dataAdmin)
 
 class user_token_data_dataAdmin(admin.ModelAdmin):

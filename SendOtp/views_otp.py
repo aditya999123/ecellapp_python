@@ -7,6 +7,7 @@ from .models import *
 from django.shortcuts import render_to_response, render
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
+@csrf_exempt
 def get_otp(request):
 	try:
 		url='http://api.msg91.com/api/sendhttp.php?authkey=120246AC7mrK6PUjd5794d29c&mobiles='
@@ -43,6 +44,7 @@ def get_otp(request):
 	print str(response_json)
 	return HttpResponse(str(response_json))
 #@csrf_exempt
+@csrf_exempt
 def ver_otp(request):
 	try:
 		firstname=str(request.POST.get("firstname"))
@@ -83,8 +85,7 @@ def ver_otp(request):
 
 			except:
 				try:
-					fcm_initial_list=fcm__not_registered.objects.get(fcm=fcm)
-					fcm_initial_list.delete()
+					fcm__not_registered.objects.get(fcm=fcm).delete()
 					user_data.objects.create(
 						first_name=firstname,
 						last_name=lastname,
@@ -95,11 +96,16 @@ def ver_otp(request):
 						sem=sem,
 						#access_token=access_token
 						)
+					print "debug=99"
 					user_list=user_data.objects.get(number=number)
-					user_token_data.create(
+					print "debug=101"
+
+					#print"\nerror in getting id\n"
+					user_token_data.objects.create(
 						id=user_list.id,
 						fcm=fcm,
 						access_token=access_token_str)
+					print"debug=108"
 					response_json={
 					"success":True,
 					"message":"successful",
@@ -134,7 +140,7 @@ def send_fcm(request):
 	if(request.method=='POST'):
 		try:
 			fcm=str(request.POST.get("fcm"))
-			if fcm==None:
+			if fcm!=None:
 
 				print "fcm recived:"+fcm
 				try:

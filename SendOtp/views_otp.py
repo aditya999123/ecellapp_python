@@ -47,12 +47,12 @@ def get_otp(request):
 @csrf_exempt
 def ver_otp(request):
 	try:
-		firstname=str(request.POST.get("firstname"))
-		lastname=str(request.POST.get("lastname"))
+		firstname=str(request.POST.get("first_name"))
+		lastname=str(request.POST.get("last_name"))
 		email=str(request.POST.get("email"))
 		college=str(request.POST.get("college"))
 		branch=str(request.POST.get("branch"))
-		sem=str(request.POST.get("sem"))
+		sem=str(request.POST.get("semester"))
 		number=str(request.POST.get("mobile"))
 		otp=str(request.POST.get("otp"))
 		fcm=str(request.POST.get("fcm"))
@@ -86,6 +86,9 @@ def ver_otp(request):
 			except:
 				try:
 					fcm__not_registered.objects.get(fcm=fcm).delete()
+				except:
+					pass
+				try:
 					user_data.objects.create(
 						first_name=firstname,
 						last_name=lastname,

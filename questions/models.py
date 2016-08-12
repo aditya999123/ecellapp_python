@@ -5,7 +5,7 @@ from django.db import models
 # Create your models here.
 class questions(models.Model):
 	question_id=models.SmallIntegerField(default=-10)
-	
+	quiz_id=models.SmallIntegerField(default=0)
 	question=models.CharField(max_length=120,blank=True,null=True)
 	question_type=models.SmallIntegerField(default=-10)
 	duration=models.SmallIntegerField(default=120)

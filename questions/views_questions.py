@@ -28,14 +28,6 @@ def question_get(request):
 			"success":False,
 			"message":"quiz not started",
 			"message_image_url":"NULL",
-			"data_type":-1,
-			"question_data":{"question":"NULL",
-			"option1":"NULL",
-			"option2":"NULL",
-			"option3":"NULL",
-			"option4":"NULL",
-			"image_url":"NULL",
-			"question_duration":0,}
 			}
 		
 		elif current_question==0:
@@ -43,24 +35,17 @@ def question_get(request):
 			"success":False,
 			"message":"pls wait for next question",
 			"message_image_url":"NULL",
-			"data_type":-1,
-			"question_data":{"question":"NULL",
-			"option1":"NULL",
-			"option2":"NULL",
-			"option3":"NULL",
-			"option4":"NULL",
-			"image_url":"NULL",
-			"question_duration":0,}
 			}
 		else:
 			try:
-				question_queries=questions.objects.get(question_id=current_question)
+				question_queries=questions.objects.get(question_id=current_question,quiz_id=current_quiz_id)
 				response_json={
 				"success":True,
 				"message":"question found and served",
 				"message_image_url":"NULL",
 				"data_type":int(question_queries.question_type),
 				"question_data":{"question":str(question_queries.question),
+				"question_id":int(question_queries.question_id),
 				"option1":str(question_queries.option1),
 				"option2":str(question_queries.option2),
 				"option3":str(question_queries.option3),
@@ -73,28 +58,12 @@ def question_get(request):
 				"success":False,
 				"message":"question with id"+str(current_question)+" not found",
 				"message_image_url":"NULL",
-				"data_type":0,
-				"question_data":{"question":"NULL",
-				"option1":"NULL",
-				"option2":"NULL",
-				"option3":"NULL",
-				"option4":"NULL",
-				"image_url":"NULL",
-				"question_duration":0,}
 				}
 	except:
 		response_json={
 				"success":False,
 				"message":"access token did not match",
 				"message_image_url":"NULL",
-				"data_type":0,
-				"question_data":{"question":"NULL",
-				"option1":"NULL",
-				"option2":"NULL",
-				"option3":"NULL",
-				"option4":"NULL",
-				"image_url":"NULL",
-				"question_duration":0,}
 				}
 	print str(response_json)
 	return HttpResponse(str(response_json))
@@ -112,14 +81,23 @@ def admin_panel(request):
 			send_notification(request.POST.get("title"),request.POST.get("data"))
 
 		if request.POST.get("question_set")=='QUESTION_SET':
-			print"debug 109"
+			print"debug 84"
 			global current_question
 			if request.POST.get("question_id")=="":
-				print"debug 112"
+				print"debug 87"
 				current_question=0
 			else:
 				current_question=int(request.POST.get("question_id"))
 				print "question activated:" +str(current_question)
+		if request.POST.get("quiz_set")=='QUIZ_SET':
+			print"debug 93"
+			global current_quiz_id
+			if request.POST.get("quiz_id")=="":
+				print"debug 96"
+				current_quiz_id=0
+			else:
+				current_quiz_id=int(request.POST.get("quiz_id"))
+				print "quiz activated:" +str(current_quiz_id)
 	#print str(response_json)
 	return render_to_response('admin_panel.html',variables)
 #@csrf_protect
@@ -146,7 +124,12 @@ def send_notification(title,data):
 @csrf_exempt
 def send_ans(request):
 	if (request.method=='GET'):
-		pass
+		response_json={
+					"success":False,
+					"message":"not post method",
+					"message_image":"https://upload.wikimedia.org/wikipedia/commons/3/3c/Fluorite-270246.jpg",
+					"message_display":"hello",
+					}
 	if(request.method)=='POST':
 		if(current_question==-1):
 			response_json={
@@ -156,12 +139,13 @@ def send_ans(request):
 		if(current_question>=0):
 			question_id_user=int(str(request.POST.get("question_id")))
 			user_access_token=str(request.POST.get("access_token"))
+			print "access_token recived:"+user_access_token
 			global current_quiz_id
 			try:
 				user_list=user_token_data.objects.get(access_token=user_access_token)
 				print "access_token recived:"+user_access_token
 
-				user_id.id
+				user_id=user_list.id
 				try:
 					user_response_list=user_response.objects.get(
 						quiz_id=current_quiz_id,
@@ -179,7 +163,7 @@ def send_ans(request):
 						quiz_id=current_quiz_id,
 						user_id=user_id,
 						question_id=question_id_user,
-						response=str(request.POST.get("response"))
+						response=str(request.POST.get("answer"))
 						)
 					response_json={
 					"success":True,

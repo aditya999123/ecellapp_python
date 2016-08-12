@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import questions
+from .models import questions,user_response
 # Register your models here.
 # class timerAdmin(admin.ModelAdmin):
 #     list_display=["time"]
@@ -8,3 +8,7 @@ from .models import questions
 class questionsAdmin(admin.ModelAdmin):
     list_display=["question","question_id","question_type"]
 admin.site.register(questions,questionsAdmin)
+
+class user_responseAdmin(admin.ModelAdmin):
+    list_display=["user_id"]
+admin.site.register(user_response,user_responseAdmin)

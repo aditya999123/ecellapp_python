@@ -26,54 +26,65 @@ def question_get(request):
 	str_access_token=str(request.GET.get("access_token"))
 	print "ACCESS TOKEN RECIVED:"+str_access_token
 	try:
-
-		access_token_queries=user_token_data.objects.get(access_token=str_access_token)
-		if current_question==-1:
+		user_list=user_token_data.objects.get(access_token=str_access_token)
+		try:
+			user_id=user_list.id
+			user_response_list=user_response.objects.get(
+				quiz_id=current_quiz_id,
+				user_id=user_id,
+				question_id=current_question_id,
+				)
 			response_json={
-			"success":False,
-			"message":"quiz not started",
-			"message_image_url":"NULL",
-			}
-		
-		elif current_question==0:
-			response_json={
-			"success":False,
-			"message":"pls wait for next question",
-			"message_image_url":"NULL",
-			}
-		else:
-			#print "\n\n\n\debug:45\n\n\n"
-			try:
-				question_queries=questions.objects.get(question_id=current_question,quiz_id=current_quiz_id)
-				rules_queries=rules.objects.filter(question_id=current_question)
-				rules_str=""
-				tmp=1
-				for o in rules_queries:
-					rules_str+=str(tmp)+") "+str(o.rules)
-					rules_str+="\n"
-					tmp+=1
-				response_json={
-				"success":True,
-				"message":"question found and served",
-				"message_image_url":"NULL",
-				"data_type":int(question_queries.question_type),
-				"question_data":{"question":str(question_queries.question),
-				"question_id":int(question_queries.question_id),
-				"option1":str(question_queries.option1),
-				"option2":str(question_queries.option2),
-				"option3":str(question_queries.option3),
-				"option4":str(question_queries.option4),
-				"image_url":str(question_queries.image_url),
-				"question_duration":str(question_queries.duration),},
-				"rules":rules_str,
+				"success":False,
+				"message":"response already submitted",
 				}
-				#"rules":[str(o.rules) for o in rules_queries]}
-			except:
+		except:
+			if current_question==-1:
 				response_json={
 				"success":False,
-				"message":"question with id"+str(current_question)+" not found or rules not found",
+				"message":"quiz not started",
 				"message_image_url":"NULL",
 				}
+			
+			elif current_question==0:
+				response_json={
+				"success":False,
+				"message":"pls wait for next question",
+				"message_image_url":"NULL",
+				}
+			else:
+				#print "\n\n\n\debug:45\n\n\n"
+				try:
+					question_queries=questions.objects.get(question_id=current_question,quiz_id=current_quiz_id)
+					rules_queries=rules.objects.filter(question_id=current_question)
+					rules_str=""
+					tmp=1
+					for o in rules_queries:
+						rules_str+=str(tmp)+") "+str(o.rules)
+						rules_str+="\n"
+						tmp+=1
+					response_json={
+					"success":True,
+					"message":"question found and served",
+					"message_image_url":"NULL",
+					"data_type":int(question_queries.question_type),
+					"question_data":{"question":str(question_queries.question),
+					"question_id":int(question_queries.question_id),
+					"option1":str(question_queries.option1),
+					"option2":str(question_queries.option2),
+					"option3":str(question_queries.option3),
+					"option4":str(question_queries.option4),
+					"image_url":str(question_queries.image_url),
+					"question_duration":str(question_queries.duration),},
+					"rules":rules_str,
+					}
+					#"rules":[str(o.rules) for o in rules_queries]}
+				except:
+					response_json={
+					"success":False,
+					"message":"question with id"+str(current_question)+" not found or rules not found",
+					"message_image_url":"NULL",
+					}
 	except:
 		response_json={
 				"success":False,

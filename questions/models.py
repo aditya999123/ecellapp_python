@@ -22,3 +22,9 @@ class user_response(models.Model):
     user_id=models.PositiveSmallIntegerField()
     quiz_id=models.PositiveSmallIntegerField()
     response=models.CharField(max_length=120,blank=True,null=True)
+class rules(models.Model):
+    question_id=models.PositiveSmallIntegerField()
+    rules=models.CharField(max_length=120,blank=True,null=True)
+class current(models.Model):
+    value=models.SmallIntegerField(default=0)
+    tag=models.CharField(max_length=120,blank=True,null=True)

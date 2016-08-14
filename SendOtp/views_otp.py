@@ -79,9 +79,15 @@ def ver_otp(request):
 				#setattr(user_list,'access_token',access_token)
 				user_list.save()
 
-				user_token_data_list=user_token_data.get(id=user_list.id)
+				user_token_data_list=user_token_data.objects.get(id=user_list.id)
 				setattr(user_token_data_list,'fcm',fcm)
 				setattr(user_token_data_list,'access_token',access_token_str)
+				user_token_data_list.save()
+
+				response_json={
+				"success":True,
+				"message":"successful",
+				"access_token":access_token_str,}
 
 			except:
 				try:

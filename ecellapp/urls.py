@@ -18,6 +18,8 @@ from django.contrib import admin
 from Splash_Screen import views_splash_screen
 from SendOtp import views_otp
 from questions import views_questions
+#from django.conf import settings
+#from django.conf.urls.static import static
 urlpatterns = [
 	#url(r'^',views_otp.initial,name='intial'),
     url(r'^$',views_otp.initial,name='start'),
@@ -29,9 +31,5 @@ urlpatterns = [
     url(r'^get_ques/$',views_questions.question_get, name = 'get_ques'),
     url(r'^admin_panel/$',views_questions.admin_panel, name = 'admin_panel'),
     url(r'^send_ans/$',views_questions.send_ans, name = 'send_ans'),
-    #url(r'^ques_trigger/$',views_questions.question, name = 'ques_trigger'),
-
-#    url(r'^timer_trigger/(?P<time_set>.+)/$',views_questions.trigger, name = 'trigger'),
-
-
-]
+    url(r'^test/$',views_questions.test, name = 'test'),
+]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

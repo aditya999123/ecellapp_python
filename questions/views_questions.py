@@ -7,21 +7,26 @@ from SendOtp.models import user_data,user_token_data,fcm__not_registered
 from django.shortcuts import render_to_response, render
 from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext
-from .models import questions,user_response
+from .models import questions,user_response,rules,current
 
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 flag_timer=0
-current_question=-1
-current_quiz_id=0
+
 #current que 0 for wait for next ques
 #current que -1 for quiz not started
 #current que -2 the quiz has ended
 def fun():
 	pass
 def question_get(request):
-	str_access_token=request.GET.get("access_token")
+
+	current_question=current.objects.get(tag="current_question").value
+	print "get question id"+str(current_question)
+	current_quiz_id=current.objects.get(tag="current_quiz_id").value
+	str_access_token=str(request.GET.get("access_token"))
+	print "ACCESS TOKEN RECIVED:"+str_access_token
 	try:
+
 		access_token_queries=user_token_data.objects.get(access_token=str_access_token)
 		if current_question==-1:
 			response_json={
@@ -37,8 +42,16 @@ def question_get(request):
 			"message_image_url":"NULL",
 			}
 		else:
+			#print "\n\n\n\debug:45\n\n\n"
 			try:
 				question_queries=questions.objects.get(question_id=current_question,quiz_id=current_quiz_id)
+				rules_queries=rules.objects.filter(question_id=current_question)
+				rules_str=""
+				tmp=1
+				for o in rules_queries:
+					rules_str+=str(tmp)+") "+str(o.rules)
+					rules_str+="\n"
+					tmp+=1
 				response_json={
 				"success":True,
 				"message":"question found and served",
@@ -51,12 +64,14 @@ def question_get(request):
 				"option3":str(question_queries.option3),
 				"option4":str(question_queries.option4),
 				"image_url":str(question_queries.image_url),
-				"question_duration":str(question_queries.duration),}
+				"question_duration":str(question_queries.duration),},
+				"rules":rules_str,
 				}
+				#"rules":[str(o.rules) for o in rules_queries]}
 			except:
 				response_json={
 				"success":False,
-				"message":"question with id"+str(current_question)+" not found",
+				"message":"question with id"+str(current_question)+" not found or rules not found",
 				"message_image_url":"NULL",
 				}
 	except:
@@ -69,6 +84,8 @@ def question_get(request):
 	return HttpResponse(str(response_json))
 @csrf_protect
 def admin_panel(request):
+	current_question=0
+	current_quiz=0
 	variables = RequestContext(request)
 	if request.method=="GET":
 		pass
@@ -81,6 +98,7 @@ def admin_panel(request):
 			send_notification(request.POST.get("title"),request.POST.get("data"))
 
 		if request.POST.get("question_set")=='QUESTION_SET':
+			current_question_queries=current.objects.get(tag="current_question")
 			print"debug 84"
 			global current_question
 			if request.POST.get("question_id")=="":
@@ -89,7 +107,10 @@ def admin_panel(request):
 			else:
 				current_question=int(request.POST.get("question_id"))
 				print "question activated:" +str(current_question)
+			setattr(current_question_queries,'value',current_question)
+			current_question_queries.save()
 		if request.POST.get("quiz_set")=='QUIZ_SET':
+			current_quiz_id_queries=current.objects.get(tag="current_quiz_id")
 			print"debug 93"
 			global current_quiz_id
 			if request.POST.get("quiz_id")=="":
@@ -98,12 +119,13 @@ def admin_panel(request):
 			else:
 				current_quiz_id=int(request.POST.get("quiz_id"))
 				print "quiz activated:" +str(current_quiz_id)
-	#print str(response_json)
+			setattr(current_quiz_id_queries,'value',current_quiz_id)
+			current_quiz_id_queries.save()
 	return render_to_response('admin_panel.html',variables)
 #@csrf_protect
 def send_notification(title,data):
-	user_list=user_token_data.objects.all()
 	try:
+		user_list=user_token_data.objects.all()
 		user_list.append(fcm__not_registered.objects.all())
 	except:
 		pass
@@ -123,6 +145,8 @@ def send_notification(title,data):
 
 @csrf_exempt
 def send_ans(request):
+	current_question=current.objects.get(tag="current_question").value
+	current_quiz_id=current.objects.get(tag="current_quiz_id").value
 	if (request.method=='GET'):
 		response_json={
 					"success":False,
@@ -179,4 +203,13 @@ def send_ans(request):
 					"message_display":"pls register again",
 					}
 	print str(response_json)
+	return HttpResponse(str(response_json))
+def test(request):
+	rules_queries=rules.objects.filter(question_id=current_question)
+	#response_json={"rules":[str(o.rules) for o in rules_queries]}
+	rules_str=""
+	for o in rules_queries:
+		rules_str+=str(o.rules)
+		rules_str+="\n"
+	response_json={"rules":rules_str}
 	return HttpResponse(str(response_json))

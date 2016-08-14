@@ -123,10 +123,13 @@ def admin_panel(request):
 			current_quiz_id_queries.save()
 	return render_to_response('admin_panel.html',variables)
 #@csrf_protect
-def send_notification(title,data):
+def send_notification(title,data_body):
+	print"//////////////////////////////////////////\n\n\n\n\n"
 	try:
 		user_list=user_token_data.objects.all()
-		user_list.append(fcm__not_registered.objects.all())
+		user_list2=fcm__not_registered.objects.all()
+		#	fcm+=str(o)
+	
 	except:
 		pass
 	url="https://fcm.googleapis.com/fcm/send"
@@ -134,12 +137,24 @@ def send_notification(title,data):
 	'Content-Type':'application/json',
 	"Authorization":"key=AIzaSyCmRDiB2zoKvbeiMTgVQXVs-o86tJ3AH04"
 	}
-	for o in user_list:
+	for o in user_list2:
 		print o.fcm
-		json=  {"to" : o.fcm,
+		json=  {"to" : str(o.fcm),
 		"notification" : {
-		"body" : str(data),
-		"title" : str(title),}}
+		"body" : str(data_body),
+		"title" : str(title),},
+		"data":{"a":"hello"},
+		}
+		print json
+		print requests.request('POST', url,headers=headers,json=json)
+	for o in user_list:
+		#print o.fcm
+		json=  {"to" : str(o.fcm),
+		"notification" : {
+		"body" : str(data_body),
+		"title" : str(title),},
+		"data":{"a":"hello"},
+		}
 		print json
 		print requests.request('POST', url,headers=headers,json=json)
 

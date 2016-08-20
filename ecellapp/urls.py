@@ -18,6 +18,12 @@ from django.contrib import admin
 from Splash_Screen import views_splash_screen
 from SendOtp import views_otp
 from questions import views_questions
+from aboutus import views_aboutus
+from blogs import views_blogs
+from contactus import views_contactus
+from esummit import views_esummit
+from events_app import views_events
+from home import views_home
 #from django.conf import settings
 #from django.conf.urls.static import static
 urlpatterns = [
@@ -32,4 +38,11 @@ urlpatterns = [
     url(r'^admin_panel/$',views_questions.admin_panel, name = 'admin_panel'),
     url(r'^send_ans/$',views_questions.send_ans, name = 'send_ans'),
     url(r'^test/$',views_questions.test, name = 'test'),
+    url(r'^aboutus/$',views_aboutus.feed, name = 'about_us_feed'),
+    url(r'^blogs/$',views_blogs.feed, name = 'views_blogs_feed'),
+    url(r'^contactus/$',views_contactus.feed, name = 'views_contactus_feed'),
+    url(r'^esummit/$',views_esummit.feed, name = 'views_esummit_feed'),
+    url(r'^events/$',views_events.feed, name = 'views_events_feed'),
+    #events registration to be included afterwards
+    url(r'^home/$',views_home.feed, name = 'views_home_feed'),
 ]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

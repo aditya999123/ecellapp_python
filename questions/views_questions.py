@@ -29,20 +29,25 @@ def question_get(request):
 		user_list=user_token_data.objects.get(access_token=str_access_token)
 		try:
 			user_id=user_list.id
+			print"\n\n\n\n\n\n\n\n\n\n\n"
+			print"command reached here"
 			user_response_list=user_response.objects.get(
 				quiz_id=current_quiz_id,
 				user_id=user_id,
-				question_id=current_question_id,
+				question_id=current_question,
 				)
 			response_json={
 				"success":False,
 				"message":"response already submitted",
 				}
+
+			print"\n\n\n\n\n\n\n\n\n\n\n"
+			print"command reached here too"
 		except:
 			if current_question==-1:
 				response_json={
 				"success":False,
-				"message":"quiz not started",
+				"message":"quiz has not started yet",
 				"message_image_url":"NULL",
 				}
 			
@@ -106,7 +111,7 @@ def admin_panel(request):
 			#print"adddddddddddddddddddddddddddddddddddddddddddd"
 
 			print str(request.POST.get("title"))+str(request.POST.get("data"))
-			send_notification(request.POST.get("title"),request.POST.get("data"))
+			send_notification(request.POST.get("title"),request.POST.get("data"),request.POST.get("intent_id"))
 
 		if request.POST.get("question_set")=='QUESTION_SET':
 			current_question_queries=current.objects.get(tag="current_question")
@@ -134,13 +139,11 @@ def admin_panel(request):
 			current_quiz_id_queries.save()
 	return render_to_response('admin_panel.html',variables)
 #@csrf_protect
-def send_notification(title,data_body):
+def send_notification(title,data_body,intent_id):
 	print"//////////////////////////////////////////\n\n\n\n\n"
 	try:
 		user_list=user_token_data.objects.all()
 		user_list2=fcm__not_registered.objects.all()
-		#	fcm+=str(o)
-	
 	except:
 		pass
 	url="https://fcm.googleapis.com/fcm/send"
@@ -154,7 +157,7 @@ def send_notification(title,data_body):
 		"notification" : {
 		"body" : str(data_body),
 		"title" : str(title),},
-		"data":{"a":"hello"},
+		"data":{"intent_id":int(intent_id)},
 		}
 		print json
 		print requests.request('POST', url,headers=headers,json=json)
@@ -164,7 +167,7 @@ def send_notification(title,data_body):
 		"notification" : {
 		"body" : str(data_body),
 		"title" : str(title),},
-		"data":{"a":"hello"},
+		"data":{"intent_id":int(intent_id)},
 		}
 		print json
 		print requests.request('POST', url,headers=headers,json=json)

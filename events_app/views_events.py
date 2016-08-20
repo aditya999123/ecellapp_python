@@ -9,15 +9,16 @@ from django.shortcuts import render_to_response, render
 
 # Create your views here.
 def feed(request):
-	data="{'events':["
+	data='{"events":['
 	for o in events_data.objects.all():
-		data+="{"+"'id':'"+str(o.id)+"',"
-		data+="'name':'"+str(o.event_name)+"',"
-		data+="'description':'"+str(o.description)+"',"
-		data+="'rules':'"+str(o.rules)+"',"
-		data+="'date':'"+str(o.date)+"',"
-		data+="'venue':'"+str(o.venue)+"'"
-		data+="},"
+		data+='{'+'"id":"'+str(o.id)+'",'
+		data+='"name":"'+str(o.event_name)+'",'
+		data+='"description":"'+str(o.description)+'",'
+		data+='"rules":"'+str(o.rules)+'",'
+		data+='"date":"'+str(o.date)+'",'
+		data+='"image":"'+str(o.image)+'",'
+		data+='"venue":"'+str(o.venue)+'"'
+		data+='},'
 	if (events_data.objects.count())>0:
 		json_data=data[:-1]
 	else:

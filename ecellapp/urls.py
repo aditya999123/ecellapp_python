@@ -24,11 +24,12 @@ from contactus import views_contactus
 from esummit import views_esummit
 from events_app import views_events
 from home import views_home
-#from django.conf import settings
-#from django.conf.urls.static import static
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
 	#url(r'^',views_otp.initial,name='intial'),
     url(r'^$',views_otp.initial,name='start'),
+    #url(r'^media/(?P<path>.*)$', 'django.views.static.serve'),
     url(r'^check_version',views_splash_screen.get_version),
     url(r'^admin/', admin.site.urls),
     url(r'^get_otp/$',views_otp.get_otp, name = 'otp'),
@@ -45,4 +46,5 @@ urlpatterns = [
     url(r'^events/$',views_events.feed, name = 'views_events_feed'),
     #events registration to be included afterwards
     url(r'^home/$',views_home.feed, name = 'views_home_feed'),
-]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]#+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

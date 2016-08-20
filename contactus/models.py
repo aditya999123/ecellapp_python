@@ -8,5 +8,5 @@ class contactus_data(models.Model):
     image=models.CharField(max_length=120,blank=True,null=True)
     designation=models.CharField(max_length=120,blank=True,null=True)
     name=models.CharField(max_length=120,blank=True,null=True)
-    number=models.CharField(max_length=120,blank=True,null=True)
+    phone=models.CharField(max_length=120,blank=True,null=True)
     email=models.CharField(max_length=120,blank=True,null=True)

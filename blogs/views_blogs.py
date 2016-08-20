@@ -16,7 +16,7 @@ def feed(request):
 		data+="'blogDate':'"+str(o.date)+"',"
 		data+="'blogOwner':'"+str(o.owner)+"',"
 		data+="'blogCategory':'"+str(o.category)+"',"
-		data+="'blogImage':'"+str(o.image)+"',"
+		data+="'blogImage':'"+request.scheme+'://'+request.get_host()+'/'+str(o.image)+'"'
 		data+="'blogBody':'"+str(o.body)+"',"
 		data+="'image':'"+str(o.image)+"',"
 		data+="'blogTime':'"+str(o.time)+"',"

@@ -9,7 +9,7 @@ from django.shortcuts import render_to_response, render
 #from django.contrib.sites.models import Site
 # Create your views here.
 def feed(request):
-	data='{"Contacts":['
+	data='{"contacts":['
 	for o in contactus_data.objects.all():
 		data+='{'+'"id":"'+str(o.id)+'",'
 		data+='"name":"'+str(o.name)+'",'

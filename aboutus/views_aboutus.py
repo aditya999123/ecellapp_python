@@ -12,7 +12,7 @@ def feed(request):
 	data='{"aboutus":['
 	for o in aboutus_data.objects.all():
 		data+='{'+'"id":"'+str(o.id)+'",'
-		data+='"image":"'+str(o.image)+'",'
+		data+='"image":"'+request.scheme+'://'+request.get_host()+'/'+str(o.image)+'"'
 		data+='"description":"'+str(o.description)+'",'
 		data+='},'
 	if (aboutus_data.objects.count())>0:

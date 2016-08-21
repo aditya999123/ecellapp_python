@@ -39,6 +39,7 @@ def question_get(request):
 			response_json={
 				"success":False,
 				"message":"response already submitted",
+				"message_image_url":request.scheme+'://'+request.get_host()+'/'+"media/general/timer_wait.jpg",
 				}
 
 			print"\n\n\n\n\n\n\n\n\n\n\n"

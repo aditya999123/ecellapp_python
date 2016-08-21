@@ -9,15 +9,13 @@ from django.shortcuts import render_to_response, render
 
 # Create your views here.
 def feed(request):
-	data='{"aboutus":['
+	tmp_id=0
 	for o in aboutus_data.objects.all():
-		data+='{'+'"id":"'+str(o.id)+'",'
-		data+='"image":"'+request.scheme+'://'+request.get_host()+'/'+str(o.image)+'"'
-		data+='"description":"'+str(o.description)+'",'
-		data+='},'
-	if (aboutus_data.objects.count())>0:
-		json_data=data[:-1]
-	else:
-		json_data=data
-	json_data+="]}"
-	return (HttpResponse(json_data))
+		tmp_id=o.id
+	tmp_row=aboutus_data.objects.get(id=tmp_id)
+	json_data={"image":str(tmp_row.image),
+	"description":str(tmp_row.description),
+
+	}
+	print(str(json_data))
+	return (HttpResponse(str(json_data)))

@@ -16,8 +16,8 @@ def feed(request):
 		data+='"description":"'+str(o.description)+'",'
 		data+='"rules":"'+str(o.rules)+'",'
 		data+='"date":"'+str(o.date)+'",'
+		data+='"venue":"'+str(o.venue)+'",'
 		data+='"image":"'+request.scheme+'://'+request.get_host()+'/'+str(o.image)+'"'
-		data+='"venue":"'+str(o.venue)+'"'
 		data+='},'
 	if (events_data.objects.count())>0:
 		json_data=data[:-1]

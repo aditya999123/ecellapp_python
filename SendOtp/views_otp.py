@@ -21,7 +21,8 @@ def get_otp(request):
 		url+=str(number)
 		otp=str(n)
 
-		url+='&message='+'hello '+str(name)+' your otp for ecell app  is '+otp
+		#url+='&message='+'E-Cell team welcomes you. \nVerification code for the app is '+otp
+		url+='&message='+'Dear '+name+' \nE-Cell team welcomes you. \nVerification code for the app is '+otp
 		url+='&sender=mECell&route=4'
 	
 		result = requests.request('GET', url)
@@ -144,8 +145,10 @@ def ver_otp(request):
 			}
 	print str(response_json)
 	return HttpResponse(str(response_json))
+from Splash_Screen.models import version_control
 @csrf_exempt
 def send_fcm(request):
+	version=version_control.objects.all()[0].app_version
 	if(request.method=='POST'):
 		try:
 			fcm=str(request.POST.get("fcm"))
@@ -153,20 +156,30 @@ def send_fcm(request):
 
 				print "fcm recived:"+fcm
 				try:
-					fcm_list=fcm__not_registered.objects.get(fcm=fcm)
+					fcm_list=user_data.objects.get(fcm=fcm)
 					response_json={"success":True,
+					"version":int(version),
 					"message":"already added"}
 				except:
-					fcm__not_registered.objects.create(fcm=fcm)
-					response_json={"success":True,
-					"message":"successfully added"}
+					try:
+						fcm_list=fcm__not_registered.objects.get(fcm=fcm)
+						response_json={"success":True,
+						"version":int(version),
+						"message":"already added"}
+					except:
+						fcm__not_registered.objects.create(fcm=fcm)
+						response_json={"success":True,
+						"version":int(version),
+						"message":"successfully added"}
 			else:
 				response_json={"success":False,
-					"message":"fcm none recieved"}
+				"version":int(version),
+				"message":"fcm none recieved"}
 
 		except:
 			response_json={"success":False,
-				"message":"send fcm : invalid parameters"}
+			"version":int(version),
+			"message":"send fcm : invalid parameters"}
 
 	else:
 		response_json={"success":False,

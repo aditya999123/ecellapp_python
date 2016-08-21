@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'esummit',
     'events_app',
     'home',
+    'spons',
 ]
 
 MIDDLEWARE_CLASSES = [

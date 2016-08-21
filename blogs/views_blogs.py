@@ -16,9 +16,10 @@ def feed(request):
 		data+="'blogDate':'"+str(o.date)+"',"
 		data+="'blogOwner':'"+str(o.owner)+"',"
 		data+="'blogCategory':'"+str(o.category)+"',"
-		data+="'blogImage':'"+request.scheme+'://'+request.get_host()+'/'+str(o.image)+'"'
+		data+="'blogImage':'"+request.scheme+'://'+request.get_host()+'/'+str(o.image)+"',"
+		#print(o.body)
 		data+="'blogBody':'"+str(o.body)+"',"
-		data+="'image':'"+str(o.image)+"',"
+		data+="'image':'"+request.scheme+'://'+request.get_host()+'/'+str(o.image)+"',"
 		data+="'blogTime':'"+str(o.time)+"',"
 		data+="},"
 	if (blogs_data.objects.count())>0:

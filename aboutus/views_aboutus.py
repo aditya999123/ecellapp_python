@@ -13,7 +13,7 @@ def feed(request):
 	for o in aboutus_data.objects.all():
 		tmp_id=o.id
 	tmp_row=aboutus_data.objects.get(id=tmp_id)
-	json_data={"image":str(tmp_row.image),
+	json_data={"image":request.scheme+'://'+request.get_host()+'/'+str(tmp_row.image),
 	"description":str(tmp_row.description),
 
 	}

@@ -48,14 +48,14 @@ def question_get(request):
 				response_json={
 				"success":False,
 				"message":"quiz has not started yet",
-				"message_image_url":"NULL",
+				"image":request.scheme+'://'+request.get_host()+'/'+"media/general/timer_wait.jpg",
 				}
 			
 			elif current_question==0:
 				response_json={
 				"success":False,
 				"message":"pls wait for next question",
-				"message_image_url":"NULL",
+				"image":request.scheme+'://'+request.get_host()+'/'+"media/general/timer.png",
 				}
 			else:
 				#print "\n\n\n\debug:45\n\n\n"
@@ -88,13 +88,13 @@ def question_get(request):
 					response_json={
 					"success":False,
 					"message":"question with id"+str(current_question)+" not found or rules not found",
-					"message_image_url":"NULL",
+					"image":request.scheme+'://'+request.get_host()+'/'+"media/general/error.png",
 					}
 	except:
 		response_json={
 				"success":False,
-				"message":"access token did not match",
-				"message_image_url":"NULL",
+				"message":"(access token did not match)\n\nPlease logout & clear data ,register again\n",
+				"image":request.scheme+'://'+request.get_host()+'/'+"media/general/error.png",
 				}
 	print str(response_json)
 	return HttpResponse(str(response_json))

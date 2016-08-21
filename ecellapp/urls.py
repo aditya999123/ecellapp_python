@@ -24,13 +24,13 @@ from contactus import views_contactus
 from esummit import views_esummit
 from events_app import views_events
 from home import views_home
+from spons import views_spons
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
 	#url(r'^',views_otp.initial,name='intial'),
     url(r'^$',views_otp.initial,name='start'),
     #url(r'^media/(?P<path>.*)$', 'django.views.static.serve'),
-    url(r'^check_version',views_splash_screen.get_version),
     url(r'^admin/', admin.site.urls),
     url(r'^get_otp/$',views_otp.get_otp, name = 'otp'),
     url(r'^send_fcm/$',views_otp.send_fcm, name = 'fcm'),
@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^get_ques/$',views_questions.question_get, name = 'get_ques'),
     url(r'^admin_panel/$',views_questions.admin_panel, name = 'admin_panel'),
     url(r'^send_ans/$',views_questions.send_ans, name = 'send_ans'),
-    url(r'^test/$',views_questions.test, name = 'test'),
+    #url(r'^test/$',views_questions.test, name = 'test'),
     url(r'^aboutus/$',views_aboutus.feed, name = 'about_us_feed'),
     url(r'^blogs/$',views_blogs.feed, name = 'views_blogs_feed'),
     url(r'^contactus/$',views_contactus.feed, name = 'views_contactus_feed'),
@@ -46,5 +46,6 @@ urlpatterns = [
     url(r'^events/$',views_events.feed, name = 'views_events_feed'),
     #events registration to be included afterwards
     url(r'^home/$',views_home.feed, name = 'views_home_feed'),
+    url(r'^spons/',views_spons.feed, name = 'views_spons_feed'),
 ]#+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

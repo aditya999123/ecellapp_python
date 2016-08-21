@@ -2,11 +2,11 @@ from django.contrib import admin
 
 
 # Register your models here.
-from .models import splash_screen_model
+from .models import version_control
 
 
-class splash_screen_model_admin(admin.ModelAdmin):
+class version_control_admin(admin.ModelAdmin):
     list_display=["app_version","compulsary_update"]
 
-admin.site.register(splash_screen_model,splash_screen_model_admin)
+admin.site.register(version_control,version_control_admin)
 # Register your models here.

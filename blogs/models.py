@@ -6,7 +6,7 @@ from django.db import models
 class blogs_data(models.Model):
     id=models.AutoField(primary_key=True,null=False)
     image=models.CharField(max_length=120,blank=True,null=True)
-    body=models.CharField(max_length=120,blank=True,null=True)
+    body=models.CharField(max_length=1500,blank=True,null=True)
     title=models.CharField(max_length=120,blank=True,null=True)
     category=models.CharField(max_length=120,blank=True,null=True)
     date=models.CharField(max_length=120,blank=True,null=True)

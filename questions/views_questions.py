@@ -8,16 +8,19 @@ from django.shortcuts import render_to_response, render
 from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext
 from .models import questions,user_response,rules,current
-
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import logout
 # Create your views here.
 flag_timer=0
 
 #current que 0 for wait for next ques
 #current que -1 for quiz not started
 #current que -2 the quiz has ended
-def fun():
-	pass
+@login_required
+def logout_page(request):
+    logout(request)
+    return HttpResponse("you have succesfully logged out")
 def question_get(request):
 
 	current_question=current.objects.get(tag="current_question").value
@@ -99,6 +102,7 @@ def question_get(request):
 				}
 	print str(response_json)
 	return HttpResponse(str(response_json))
+@login_required
 @csrf_protect
 def admin_panel(request):
 	current_question=0

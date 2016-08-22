@@ -32,8 +32,10 @@ urlpatterns = [
     url(r'^$',views_otp.initial,name='start'),
     #url(r'^media/(?P<path>.*)$', 'django.views.static.serve'),
     url(r'^admin/', admin.site.urls),
+    url(r'^login/$', 'django.contrib.auth.views.login'),
     url(r'^get_otp/$',views_otp.get_otp, name = 'otp'),
     url(r'^send_fcm/$',views_otp.send_fcm, name = 'fcm'),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^ver_otp/$',views_otp.ver_otp, name = 'otp_ver'), 
     url(r'^get_ques/$',views_questions.question_get, name = 'get_ques'),
     url(r'^admin_panel/$',views_questions.admin_panel, name = 'admin_panel'),
@@ -47,5 +49,6 @@ urlpatterns = [
     #events registration to be included afterwards
     url(r'^home/$',views_home.feed, name = 'views_home_feed'),
     url(r'^spons/',views_spons.feed, name = 'views_spons_feed'),
+    url(r'^logout/$', views_questions.logout_page, name = 'logout_page'),
 ]#+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

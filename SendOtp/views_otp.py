@@ -82,9 +82,9 @@ def ver_otp(request):
 
 				user_token_data_list=user_token_data.objects.get(id=user_list.id)
 				setattr(user_token_data_list,'fcm',fcm)
-				setattr(user_token_data_list,'access_token',access_token_str)
+				#setattr(user_token_data_list,'access_token',access_token_str)
 				user_token_data_list.save()
-
+				access_token_str=str(user_token_data_list.access_token)
 				response_json={
 				"success":True,
 				"message":"successful",
@@ -188,4 +188,4 @@ def send_fcm(request):
 	return HttpResponse(str(response_json))
 
 def initial(request):
-	return HttpResponse("under construction_iket")
+	return HttpResponse("<a href=./login>admin_login</a>")

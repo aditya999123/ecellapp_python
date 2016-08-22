@@ -120,7 +120,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+import django.contrib.auth
+django.contrib.auth.LOGIN_URL = '/login'
 
 LANGUAGE_CODE = 'en-us'
 

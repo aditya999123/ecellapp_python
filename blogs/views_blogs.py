@@ -9,19 +9,19 @@ from django.shortcuts import render_to_response, render
 
 # Create your views here.
 def feed(request):
-	data="{'blogs':["
+	data='{"blogs":['
 	for o in blogs_data.objects.all():
-		data+="{"+"'blogId':'"+str(o.id)+"',"
-		data+="'blogTitle':'"+str(o.title)+"',"
-		data+="'blogDate':'"+str(o.date)+"',"
-		data+="'blogOwner':'"+str(o.owner)+"',"
-		data+="'blogCategory':'"+str(o.category)+"',"
-		data+="'blogImage':'"+request.scheme+'://'+request.get_host()+'/'+str(o.image)+"',"
+		data+='{'+'"blogId":"'+str(o.id)+'",'
+		data+='"blogTitle":"'+str(o.title)+'",'
+		data+='"blogDate":"'+str(o.date)+'",'
+		data+='"blogOwner":"'+str(o.owner)+'",'
+		data+='"blogCategory":"'+str(o.category)+'",'
+		data+='"blogImage":"'+request.scheme+"://"+request.get_host()+"/"+str(o.image)+'",'
 		#print(o.body)
-		data+="'blogBody':'"+str(o.body)+"',"
-		data+="'image':'"+request.scheme+'://'+request.get_host()+'/'+str(o.image)+"',"
-		data+="'blogTime':'"+str(o.time)+"',"
-		data+="},"
+		data+='"blogBody":"'+str(o.body)+'",'
+		data+='"image":"'+request.scheme+"://"+request.get_host()+"/"+str(o.image)+'",'
+		data+='"blogTime":"'+str(o.time)+'"'
+		data+='},'
 	if (blogs_data.objects.count())>0:
 		json_data=data[:-1]
 	else:

@@ -116,7 +116,10 @@ def admin_panel(request):
 			#print"adddddddddddddddddddddddddddddddddddddddddddd"
 
 			print str(request.POST.get("title"))+str(request.POST.get("data"))
-			send_notification(request.POST.get("title"),request.POST.get("data"),request.POST.get("intent_id"))
+			intent_id=request.POST.get("intent_id")
+			if intent_id=="":
+				intent_id=0
+			send_notification(request.POST.get("title"),request.POST.get("data"),intent_id)
 
 		if request.POST.get("question_set")=='QUESTION_SET':
 			current_question_queries=current.objects.get(tag="current_question")
@@ -144,7 +147,7 @@ def admin_panel(request):
 			current_quiz_id_queries.save()
 	return render_to_response('admin_panel.html',variables)
 #@csrf_protect
-def send_notification(title,data_body,intent_id):
+def send_notification(title,data_body,intent_id=0):
 	print"//////////////////////////////////////////\n\n\n\n\n"
 	try:
 		user_list=user_token_data.objects.all()

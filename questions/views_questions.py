@@ -185,14 +185,17 @@ def send_ans(request):
 		response_json={
 					"success":False,
 					"message":"not post method",
-					"message_image":"https://upload.wikimedia.org/wikipedia/commons/3/3c/Fluorite-270246.jpg",
-					"message_display":"hello",
+					"message_image":request.scheme+'://'+request.get_host()+'/'+"media/general/error.png",
+					"message_display":"Please Start the quiz again",
+
 					}
 	if(request.method)=='POST':
 		if(current_question==-1):
 			response_json={
 			"success":False,
 			"message":"quiz has not started",
+			"message_image":request.scheme+'://'+request.get_host()+'/'+"media/general/timer_wait.jpg",
+			"message_display":"Please Wait quiz hasnt started",
 			}
 		if(current_question>=0):
 			question_id_user=int(str(request.POST.get("question_id")))
@@ -213,8 +216,8 @@ def send_ans(request):
 					response_json={
 					"success":False,
 					"message":"response already registered",
-					"message_image":"https://upload.wikimedia.org/wikipedia/commons/3/3c/Fluorite-270246.jpg",
-					"message_display":"your response for this question has already been submitted",
+					"message_image":request.scheme+'://'+request.get_host()+'/'+"media/general/error.png",
+					"message_display":"Your response for this question has already been submitted",
 					}
 				except:
 					user_response.objects.create(
@@ -225,16 +228,18 @@ def send_ans(request):
 						)
 					response_json={
 					"success":True,
-					"message_image":"https://upload.wikimedia.org/wikipedia/commons/3/3c/Fluorite-270246.jpg",
-					"message_display":"your response has been successfuly submitted",
-					"message":"response successfuly registered",
+					"message_image":request.scheme+'://'+request.get_host()+'/'+"media/general/thumbsup.png",
+					"message":"Response Successfuly Registered",
+					"message_display":"Response Successfuly Registered",
+		
+		
 					}
 			except:
 				response_json={
 					"success":False,
-					"message":"access token not found",
-					"message_image":"https://upload.wikimedia.org/wikipedia/commons/3/3c/Fluorite-270246.jpg",
-					"message_display":"pls register again",
+					"message_image":request.scheme+'://'+request.get_host()+'/'+"media/general/error.png",
+					"message":"access_token did not match",
+					"message_display":"Pls clear Data of the app and register again",
 					}
 	print str(response_json)
 	return HttpResponse(str(response_json))

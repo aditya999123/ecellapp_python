@@ -149,6 +149,7 @@ from Splash_Screen.models import version_control
 @csrf_exempt
 def send_fcm(request):
 	version=version_control.objects.all()[0].app_version
+	compulsary_update=version_control.objects.all()[0].compulsary_update
 	if(request.method=='POST'):
 		try:
 			fcm=str(request.POST.get("fcm"))
@@ -159,31 +160,38 @@ def send_fcm(request):
 					fcm_list=user_data.objects.get(fcm=fcm)
 					response_json={"success":True,
 					"version":int(version),
-					"message":"already added"}
+					"message":"already added",
+					"compulsary_update":int(compulsary_update)}
 				except:
 					try:
 						fcm_list=fcm__not_registered.objects.get(fcm=fcm)
 						response_json={"success":True,
 						"version":int(version),
-						"message":"already added"}
+						"message":"already added",
+						"compulsary_update":int(compulsary_update)}
 					except:
 						fcm__not_registered.objects.create(fcm=fcm)
 						response_json={"success":True,
 						"version":int(version),
-						"message":"successfully added"}
+						"message":"successfully added",
+						"compulsary_update":int(compulsary_update)}
 			else:
 				response_json={"success":False,
 				"version":int(version),
-				"message":"fcm none recieved"}
+				"message":"fcm none recieved",
+				"compulsary_update":int(compulsary_update)}
 
 		except:
 			response_json={"success":False,
 			"version":int(version),
-			"message":"send fcm : invalid parameters"}
+			"message":"send fcm : invalid parameters",
+			"compulsary_update":int(compulsary_update)}
 
 	else:
 		response_json={"success":False,
-				"message":"not post method"}
+				"message":"not post method",
+				"compulsary_update":int(compulsary_update),
+				"version":int(version),}
 	print str(response_json)
 	return HttpResponse(str(response_json))
 

@@ -84,6 +84,7 @@ def question_get(request):
 					"option3":str(question_queries.option3),
 					"option4":str(question_queries.option4),
 					"image_url":str(question_queries.image_url),
+					"points":str(question_queries.points),
 					"question_duration":str(question_queries.duration),},
 					"rules":rules_str,
 					}

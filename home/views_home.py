@@ -26,7 +26,7 @@ private int type;
 	for o in home_data.objects.all():
 		data+='{'+'"title":"'+str(o.title)+'",'
 		data+='"discription":"'+str(o.description)+'",'
-		data+='"type":2,'
+		data+='"type":'+str(o.data_type)+","
 		data+='"timestamp":"'+str(o.date)+'",'
 		data+='"owner":"'+str(o.owner)+'",'
 		data+='"image":"'+request.scheme+"://"+request.get_host()+"/"+str(o.image)+'"'

@@ -4,10 +4,11 @@ from django.db import models
 
 # Create your models here.
 class home_data(models.Model):
-    id=models.AutoField(primary_key=True,null=False)
+    id=models.SmallIntegerField(default=0,primary_key=True)
     image=models.CharField(max_length=120,blank=True,null=True)
     description=models.CharField(max_length=1200,blank=True,null=True)
     date=models.CharField(max_length=120,blank=True,null=True)
+    data_type=models.SmallIntegerField(default=0)
     owner=models.CharField(max_length=120,blank=True,null=True)
     title=models.CharField(max_length=120,blank=True,null=True)
 '''

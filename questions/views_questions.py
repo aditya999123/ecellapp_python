@@ -83,11 +83,12 @@ def question_get(request):
 					"option2":str(question_queries.option2),
 					"option3":str(question_queries.option3),
 					"option4":str(question_queries.option4),
-					"image_url":str(question_queries.image_url),
 					"points":str(question_queries.points),
+					"image_url":request.scheme+'://'+request.get_host()+'/'+str(question_queries.image_url),
 					"question_duration":str(question_queries.duration),},
 					"rules":rules_str,
 					}
+					print "json ended"
 					#"rules":[str(o.rules) for o in rules_queries]}
 				except:
 					response_json={

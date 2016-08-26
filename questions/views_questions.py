@@ -24,6 +24,7 @@ def logout_page(request):
 def question_get(request):
 
 	current_question=current.objects.get(tag="current_question").value
+	message=str(current.objects.get(tag="current_question").message)
 	print "get question id"+str(current_question)
 	current_quiz_id=current.objects.get(tag="current_quiz_id").value
 	str_access_token=str(request.GET.get("access_token"))
@@ -51,10 +52,9 @@ def question_get(request):
 			if current_question==-1:
 				response_json={
 				"success":False,
-				"message":"quiz has not started yet",
+				"message":message,
 				"message_image_url":request.scheme+'://'+request.get_host()+'/'+"media/general/timer_wait.jpg",
 				}
-			
 			elif current_question==0:
 				response_json={
 				"success":False,

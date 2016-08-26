@@ -27,5 +27,6 @@ class rules(models.Model):
     question_id=models.PositiveSmallIntegerField()
     rules=models.CharField(max_length=120,blank=True,null=True)
 class current(models.Model):
-    value=models.SmallIntegerField(default=0)
-    tag=models.CharField(max_length=120,blank=True,null=True)
+	message=models.CharField(max_length=120,blank=True,null=True)
+	value=models.SmallIntegerField(default=0)
+	tag=models.CharField(max_length=120,blank=True,null=True)

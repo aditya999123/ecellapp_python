@@ -99,7 +99,7 @@ def question_get(request):
 	except:
 		response_json={
 				"success":False,
-				"message":"(access token did not match)\n\nPlease logout & clear data ,register again\n",
+				"message":"(Technical Error)\n\nPlease logout & register again\nSorry for the inconvenience caused",
 				"message_image_url":request.scheme+'://'+request.get_host()+'/'+"media/general/error.png",
 				}
 	print str(response_json)
@@ -112,7 +112,7 @@ def admin_panel(request):
 	variables = RequestContext(request)
 	if request.method=="GET":
 		pass
-		
+
 	if request.method=="POST":
 		if request.POST.get("send")=='SEND':
 			#print"adddddddddddddddddddddddddddddddddddddddddddd"
@@ -236,8 +236,8 @@ def send_ans(request):
 					"message_image":request.scheme+'://'+request.get_host()+'/'+"media/general/thumbsup.png",
 					"message":"Response Successfuly Registered",
 					"message_display":"Response Successfuly Registered",
-		
-		
+
+
 					}
 			except:
 				response_json={

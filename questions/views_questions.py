@@ -167,7 +167,9 @@ def send_notification(title,data_body,intent_id=0):
 		"notification" : {
 		"body" : str(data_body),
 		"title" : str(title),},
-		"data":{"intent_id":int(intent_id)},
+		"data":{"intent_id":int(intent_id),
+		"body" : str(data_body),
+		"title" : str(title),},
 		}
 		print json
 		print requests.request('POST', url,headers=headers,json=json)
@@ -177,7 +179,9 @@ def send_notification(title,data_body,intent_id=0):
 		"notification" : {
 		"body" : str(data_body),
 		"title" : str(title),},
-		"data":{"intent_id":int(intent_id)},
+		"data":{"intent_id":int(intent_id),
+		"body" : str(data_body),
+		"title" : str(title),},
 		}
 		print json
 		print requests.request('POST', url,headers=headers,json=json)

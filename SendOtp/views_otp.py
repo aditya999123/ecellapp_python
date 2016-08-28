@@ -157,7 +157,7 @@ def send_fcm(request):
 
 				print "fcm recived:"+fcm
 				try:
-					fcm_list=user_data.objects.get(fcm=fcm)
+					fcm_list=user_token_data.objects.get(fcm=fcm)
 					response_json={"success":True,
 					"version":int(version),
 					"message":"already added",

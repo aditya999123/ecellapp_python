@@ -161,27 +161,16 @@ def send_notification_request(json):
 import time
 def send_notification(title,data_body,intent_id=0):
 	print"//////////////////////////////////////////\n\n\n\n\n"
-	try:
-		user_list=user_token_data.objects.all()
-		user_list2=fcm__not_registered.objects.all()
-	except:
-		pass
-	for o in user_list:
-		#print o.fcm
-		json=  {"to" : str(o.fcm),
-		"notification":{
-		"body" : '"'+str(data_body)+'"',
-		"title" : '"'+str(title)+'"'},
-		"data":{"intent_id":int(intent_id),
-		"body" : str(data_body),
-		"title" : str(title),},
-		}
-		time.sleep(.05)
-		p1=mp.Process(name='notification_mp',target=send_notification_request,args=[json])
-		p1.start()
-	for o in user_list2:
-		#print o.fcm
-		json=  {"to" : str(o.fcm),
+	
+	user_fcm_list=[]
+	for o in user_token_data.objects.all():
+		if str(o.fcm) not in user_fcm_list:
+			user_fcm_list.append(str(o.fcm))
+	for o in fcm__not_registered.objects.all():
+		if str(o.fcm) not in user_fcm_list:
+			user_fcm_list.append(str(o.fcm))
+	for o in user_fcm_list:
+		json=  {"to" : str(o),
 		"notification":{
 		"body" : '"'+str(data_body)+'"',
 		"title" : '"'+str(title)+'"'},

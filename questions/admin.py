@@ -10,7 +10,7 @@ class questionsAdmin(admin.ModelAdmin):
 admin.site.register(questions,questionsAdmin)
 
 class user_responseAdmin(admin.ModelAdmin):
-    list_display=["user_id"]
+    list_display=["user_id","quiz_id"]
 admin.site.register(user_response,user_responseAdmin)
 
 class rulesAdmin(admin.ModelAdmin):

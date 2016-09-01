@@ -127,7 +127,7 @@ def admin_panel(request):
 		if request.POST.get("question_set")=='QUESTION_SET':
 			current_question_queries=current.objects.get(tag="current_question")
 			print"debug 84"
-			global current_question
+			#global current_question
 			if request.POST.get("question_id")=="":
 				print"debug 87"
 				current_question=0
@@ -139,7 +139,7 @@ def admin_panel(request):
 		if request.POST.get("quiz_set")=='QUIZ_SET':
 			current_quiz_id_queries=current.objects.get(tag="current_quiz_id")
 			print"debug 93"
-			global current_quiz_id
+			#global current_quiz_id
 			if request.POST.get("quiz_id")=="":
 				print"debug 96"
 				current_quiz_id=0
@@ -150,14 +150,26 @@ def admin_panel(request):
 			current_quiz_id_queries.save()
 	return render_to_response('admin_panel.html',variables)
 #@csrf_protect
-def send_notification_request(json):
-	url="https://fcm.googleapis.com/fcm/send"
-	headers={
-	'Content-Type':'application/json',
-	"Authorization":"key=AIzaSyCmRDiB2zoKvbeiMTgVQXVs-o86tJ3AH04"
-	}
-	#print json
-	print 2#requests.request('POST', url,headers=headers,json=json)
+def send_notification_request(intent_id,data_body,title,fcm_list):
+	print "called"
+	#fvR0TS--jv0:APA91bHEHaU7gXqO8_SFqC2ybF0Mkirna0RfiYKNfouB0hN0rnlOLztvDGFRnUHWC7X1sgKcadrEuLTammB1KGHzfYMnxGqrjwqzMPcXmJMt-3LE6iQgzXLm306JYewZjXE8zSEyFDBK
+	for o in fcm_list:
+		json= {
+		"to" :str(o),
+		"data":{
+		"intent_id":int(intent_id),
+		"body" :'"'+str(data_body)+'"',
+		"title" :'"'+str(title)+'"',
+		},
+		}
+		print json
+		url="https://fcm.googleapis.com/fcm/send"
+		headers={
+		'Content-Type':'application/json',
+		"Authorization":"key=AIzaSyCmRDiB2zoKvbeiMTgVQXVs-o86tJ3AH04"
+		}
+		#print json
+		print requests.request('POST', url,headers=headers,json=json)
 import time
 def send_notification(title,data_body,intent_id=0):
 	print"//////////////////////////////////////////\n\n\n\n\n"
@@ -169,18 +181,12 @@ def send_notification(title,data_body,intent_id=0):
 	for o in fcm__not_registered.objects.all():
 		if str(o.fcm) not in user_fcm_list:
 			user_fcm_list.append(str(o.fcm))
-	for o in user_fcm_list:
-		json=  {"to" : str(o),
-		"notification":{
-		"body" : '"'+str(data_body)+'"',
-		"title" : '"'+str(title)+'"'},
-		"data":{"intent_id":int(intent_id),
-		"body" : str(data_body),
-		"title" : str(title),},
-		}
-		time.sleep(.05)
-		p1=mp.Process(name='notification_mp',target=send_notification_request,args=[json])
+	list_number=len(user_fcm_list)
+	for iterator in range(30,list_number,31):
+		print iterator-30,iterator
+		p1=mp.Process(name='notification_mp',target=send_notification_request,args=(intent_id,data_body,title,user_fcm_list[iterator-5:iterator]))
 		p1.start()
+		time.sleep(1)
 
 @csrf_exempt
 def send_ans(request):

@@ -12,7 +12,8 @@ def feed(request):
 	data='{"spons":['
 	for o in spons_data.objects.all():
 		data+='{'+'"id":"'+str(o.id)+'",'
-		data+='"image1":"'+request.scheme+'://'+request.get_host()+'/'+str(o.image1)+'"'
+		data+='"image1":"'+request.scheme+'://'+request.get_host()+'/'+str(o.image1)+'",'
+		data+='"image2":"'+request.scheme+'://'+request.get_host()+'/'+str(o.image1)+'"'
 		data+='},'
 	if (spons_data.objects.count())>0:
 		json_data=data[:-1]

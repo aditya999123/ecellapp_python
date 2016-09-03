@@ -122,7 +122,9 @@ def admin_panel(request):
 			intent_id=request.POST.get("intent_id")
 			if intent_id=="":
 				intent_id=0
-			send_notification(request.POST.get("title"),request.POST.get("data"),intent_id)
+			print "////////////////////////////////////////////"+mp.current_process().name
+			p1=mp.Process(name='MainProcess',target=send_notification,args=(request.POST.get("title"),request.POST.get("data"),intent_id))
+			p1.start()
 
 		if request.POST.get("question_set")=='QUESTION_SET':
 			current_question_queries=current.objects.get(tag="current_question")
@@ -173,7 +175,7 @@ def send_notification_request(intent_id,data_body,title,fcm_list):
 import time
 def send_notification(title,data_body,intent_id=0):
 	print"//////////////////////////////////////////\n\n\n\n\n"
-	
+
 	user_fcm_list=[]
 	for o in user_token_data.objects.all():
 		if str(o.fcm) not in user_fcm_list:
@@ -184,7 +186,7 @@ def send_notification(title,data_body,intent_id=0):
 	list_number=len(user_fcm_list)
 	for iterator in range(30,list_number,31):
 		print iterator-30,iterator
-		p1=mp.Process(name='notification_mp',target=send_notification_request,args=(intent_id,data_body,title,user_fcm_list[iterator-5:iterator]))
+		p1=mp.Process(name='notification_mp',target=send_notification_request,args=(intent_id,data_body,title,user_fcm_list[iterator-30:iterator]))
 		p1.start()
 		time.sleep(1)
 
